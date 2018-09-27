@@ -1,0 +1,67 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Opamp Designer</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body style="overflow: scroll">
+    <div class="body">
+        <div class="header">
+            <h1>Opamp Designer</h1>
+        </div>
+        <div class="content">
+
+            <div class="box">
+                <h2>Try it Out <h4>(Works, but not completely)</h4></h2>
+                <p>Write the coefficients of all the terms in the equation with a space</p>
+                <div>
+                <input type="text" id="input">
+                <a href="./designer.html">
+                    <button class="go" onclick="localStorage.setItem('query',document.getElementById('input').value);">
+                        Generate Circuit
+                    </button>
+                </a>
+            </div>
+            </div>
+            <div class="block">
+                <h2>What Is an Opamp
+                    <hr />
+                </h2>
+
+                <p>
+                    An Operational Amplifier (in short opamp) is an electronic circuit element designed for DC
+                    amplification and are therefore used extensively in signal conditioning, filtering or to perform
+                    mathematical operations such as add, subtract, integration and differentiation.
+                    <br />
+                    For a detailed info on opamp, you can refer to <a href="https://en.wikipedia.org/wiki/Operational_amplifier">Wikipedia</a>.
+                </p>
+            </div>
+            <div class="block">
+
+                <h2>What does this Opamp designer do?
+                    <hr />
+                </h2>
+
+                <p>
+                    One of the applications of Opamp is to build mathematical circuits. 
+                    Given a set of input voltages we can get the output voltage as a linear combination of the input voltages.
+
+                    For example : <br /> 
+                    <p class="formula">
+                        V<sub>out</sub> = 2V<sub>1</sub> + 5V<sub>2</sub> - 4V<sub>3</sub>
+                    </p>
+                    <p>What this tool does is, given a linear combination of equations, it will design an optimal opamp circuit which implelemnts the equation</p>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- <canvas id="mycanvas">Your browser does not support canvas</canvas> -->
+</body>
+<!-- <script src="js/canvasApi.js"></script>
+<script src="js/renderer.js"></script> -->
+<!-- <script src="js/renderer.js"></script> -->
+</html>
