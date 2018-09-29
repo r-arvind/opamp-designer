@@ -184,7 +184,8 @@ var circuit = {
             this.extendRight(ctx,nodes.nodeNegative,2);
             this.extendUp(ctx,nodes.current,11);
             this.extendRight(ctx,nodes.current,1);
-            this.resistorRight(ctx,nodes.current,`R${i}`);
+            var resValue = (this.rf/this.z).toFixed(2);
+            this.resistorRight(ctx,nodes.current,"Rx",resValue);
             this.extendRight(ctx,nodes.current,1);
         }
     },
@@ -202,7 +203,8 @@ var circuit = {
             this.extendRight(ctx,nodes.nodePositive,4);
             this.extendDown(ctx,nodes.current,11);
             this.extendRight(ctx,nodes.current,1);
-            this.resistorRight(ctx,nodes.current,`R${i}`);
+            var resValue = (this.rf/this.z).toFixed(2);
+            this.resistorRight(ctx,nodes.current,"Rx",resValue);
             this.extendRight(ctx,nodes.current,1);
         }
     }
