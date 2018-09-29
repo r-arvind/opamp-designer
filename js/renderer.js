@@ -12,6 +12,7 @@ var circuit = {
     posTerms : [],
     negTerms : [],
     z : -1,
+    rf:100,
     init: function(ctx){
         ctx.strokeStyle = "black";
         ctx.font = "20px Arial";
@@ -97,29 +98,33 @@ var circuit = {
         fillRect(ctx,node.x,node.y,5,5);
         nodes[name] = node;
     },
-    resistorRight: function(ctx,node,name){
+    resistorRight: function(ctx,node,name,value){
         ctx.lineWidth = 3;
         ctx.strokeStyle = "blue";
         ctx.beginPath();
         moveTo(ctx,node.x,node.y);
+        ctx.font = "bold 13.5px Arial";
+        fillText(ctx,`${name} = ${value} K\u{2126}`,node.x+0.5,node.y-1.5);
         for(var i=0;i<3;i++){
-            lineTo(ctx,nodes.current.x+0.25,nodes.current.y+1);
-            moveTo(ctx,nodes.current.x,nodes.current.y);
-            lineTo(ctx,nodes.current.x+0.25,nodes.current.y-1);
-            moveTo(ctx,nodes.current.x,nodes.current.y);
             lineTo(ctx,nodes.current.x+0.25,nodes.current.y-1);
             moveTo(ctx,nodes.current.x,nodes.current.y);
             lineTo(ctx,nodes.current.x+0.25,nodes.current.y+1);
+            moveTo(ctx,nodes.current.x,nodes.current.y);
+            lineTo(ctx,nodes.current.x+0.25,nodes.current.y+1);
+            moveTo(ctx,nodes.current.x,nodes.current.y);
+            lineTo(ctx,nodes.current.x+0.25,nodes.current.y-1);
             moveTo(ctx,nodes.current.x,nodes.current.y);
         }
         ctx.closePath();
         ctx.stroke();
     },
-    resistorLeft: function(ctx,node,name){
+    resistorLeft: function(ctx,node,name,value){
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.strokeStyle = "blue";
         moveTo(ctx,node.x,node.y);
+        ctx.font = "bold 13.5px Arial";
+        fillText(ctx,`${name} = ${value} K\u{2126}`,node.x,node.y-0.2);
         for(var i=0;i<3;i++){
             lineTo(ctx,nodes.current.x-0.25,nodes.current.y+1);
             moveTo(ctx,nodes.current.x,nodes.current.y);
@@ -138,7 +143,7 @@ var circuit = {
         this.extendLeft(ctx,nodes.Vminus,4);
         this.extendUp(ctx,nodes.current,6);
         this.extendRight(ctx,nodes.current,5);
-        this.resistorRight(ctx,nodes.current,"Rf");
+        this.resistorRight(ctx,nodes.current,"Rf",this.rf);
         this.extendRight(ctx,nodes.current,4);
         this.extendDown(ctx,nodes.current,8);
         this.markNode(ctx,nodes.current,"V1");
@@ -159,17 +164,19 @@ var circuit = {
         var arr = string.split(" ");
         var terms = arr.length;
         for(var i=0;i<terms;i++){
-            var int = parseInt(arr[i]); 
+            var int = parseInt(arr[i]);
+            var obj = {value:int,index:i+1};
             this.z = this.z + int;
-            if(int > 0) this.posTerms.push(int);
-            if(int < 0) this.negTerms.push(int);
+            if(int > 0) this.posTerms.push(obj);
+            if(int < 0) this.negTerms.push(obj);
         }      
     },
     drawPositive : function(ctx){
         for(var i=0;i<this.posTerms.length;i++){
             this.extendUp(ctx,nodes.nodeNegative,i*4);
             this.extendLeft(ctx,nodes.current,5);
-            this.resistorLeft(ctx,nodes.current,`R${i}`);
+            var resValue = (this.rf/this.posTerms[i].value).toFixed(2);
+            this.resistorLeft(ctx,nodes.current,`R${this.posTerms[i].index}`,resValue);
             this.extendLeft(ctx,nodes.current,5);
         }
 
@@ -186,7 +193,8 @@ var circuit = {
         for(var i=0;i<this.negTerms.length;i++){
             this.extendDown(ctx,nodes.nodePositive,i*4);
             this.extendLeft(ctx,nodes.current,5);
-            this.resistorLeft(ctx,nodes.current,`R${i}`);
+            var resValue = (this.rf/this.negTerms[i].value).toFixed(2);
+            this.resistorLeft(ctx,nodes.current,`R${this.negTerms[i].index}`,resValue);
             this.extendLeft(ctx,nodes.current,5);
         }
 
