@@ -15,3 +15,8 @@ function fillRect(ctx,x,y,width,height){
 function fillText(ctx,name,x,y){
     ctx.fillText(name,circuit.grid_x*x,circuit.grid_y*y);
 }
+
+function circle(ctx,cent_x,cent_y){
+    ctx.arc(cent_x*circuit.grid_x,cent_y*circuit.grid_y,1.5*circuit.grid_y,0,2*Math.PI);
+    nodes["current"] = {x:cent_x,y:cent_y};
+}

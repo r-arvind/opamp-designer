@@ -171,32 +171,34 @@ var circuit = {
             if(int < 0) this.negTerms.push(obj);
         }      
     },
-    drawPositive : function(ctx){
-        for(var i=0;i<this.posTerms.length;i++){
+    drawNegative : function(ctx){
+        for(var i=0;i<this.negTerms.length;i++){
             this.extendUp(ctx,nodes.nodeNegative,i*4);
             this.extendLeft(ctx,nodes.current,5);
-            var resValue = (this.rf/this.posTerms[i].value).toFixed(2);
-            this.resistorLeft(ctx,nodes.current,`R${this.posTerms[i].index}`,resValue);
+            var resValue = -(this.rf/this.negTerms[i].value).toFixed(2);
+            this.resistorLeft(ctx,nodes.current,`R${this.negTerms[i].index}`,resValue);
             this.extendLeft(ctx,nodes.current,5);
+            this.drawVoltageRight(ctx,nodes.current,`V${this.negTerms[i].index}`);
         }
 
         if(this.z < 0){
             this.extendRight(ctx,nodes.nodeNegative,2);
             this.extendUp(ctx,nodes.current,11);
             this.extendRight(ctx,nodes.current,1);
-            var resValue = (this.rf/this.z).toFixed(2);
+            var resValue = -(this.rf/this.z).toFixed(2);
             this.resistorRight(ctx,nodes.current,"Rx",resValue);
             this.extendRight(ctx,nodes.current,1);
         }
     },
 
-    drawNegative : function(ctx){
-        for(var i=0;i<this.negTerms.length;i++){
+    drawPositive : function(ctx){
+        for(var i=0;i<this.posTerms.length;i++){
             this.extendDown(ctx,nodes.nodePositive,i*4);
             this.extendLeft(ctx,nodes.current,5);
-            var resValue = (this.rf/this.negTerms[i].value).toFixed(2);
-            this.resistorLeft(ctx,nodes.current,`R${this.negTerms[i].index}`,resValue);
+            var resValue = (this.rf/this.posTerms[i].value).toFixed(2);
+            this.resistorLeft(ctx,nodes.current,`R${this.posTerms[i].index}`,resValue);
             this.extendLeft(ctx,nodes.current,5);
+            this.drawVoltageRight(ctx,nodes.current,`V${this.posTerms[i].index}`);
         }
 
         if(this.z > 0){
@@ -207,6 +209,15 @@ var circuit = {
             this.resistorRight(ctx,nodes.current,"Rx",resValue);
             this.extendRight(ctx,nodes.current,1);
         }
+    },
+
+    drawVoltageRight : function(ctx,node,name){
+        ctx.beginPath();
+        circle(ctx,node.x-1,node.y);
+        ctx.stroke();
+        fillText(ctx,name,node.x-1.4,node.y+0.4);
+        moveTo(ctx,node.x-2,node.y);
+        this.extendLeft(ctx,nodes.current,2);
     }
 }
 
