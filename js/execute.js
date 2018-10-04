@@ -1,6 +1,6 @@
 function generateCircuit(){
     circuit.init(ctx);
-    circuit.drawOpamp(ctx, 36, 24);
+    circuit.drawOpamp(ctx, 39, 24);
     circuit.drawGridX(ctx);
     circuit.drawGridY(ctx);
     circuit.evaluateInput(localStorage.getItem("query"));

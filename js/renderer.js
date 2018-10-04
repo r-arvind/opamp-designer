@@ -51,6 +51,8 @@ var circuit = {
         nodes["Vout"] = {x: x+4,y: y};
         nodes["Vplus"] = {x: x,y: y+2};
         nodes["Vminus"] = {x: x,y: y-2};
+        fillText(ctx,"+",nodes.Vplus.x + 0.2,nodes.Vplus.y+0.4);
+        fillText(ctx,"-",nodes.Vminus.x + 0.3,nodes.Vminus.y+0.4);
     },
 
     extendRight: function(ctx,node,length){
@@ -152,7 +154,7 @@ var circuit = {
         this.extendLeft(ctx,nodes.Vminus,8);
         this.markNode(ctx,nodes.current,"nodeNegative");
         this.extendLeft(ctx,nodes.Vplus,4);
-        if(this.z < 0) {
+        if(this.z > 0) {
             this.markNode(ctx,nodes.current,"nodeX");
         }
         this.extendLeft(ctx,nodes.current,4);
@@ -169,15 +171,15 @@ var circuit = {
             this.z = this.z + int;
             if(int > 0) this.posTerms.push(obj);
             if(int < 0) this.negTerms.push(obj);
-        }      
+        }     
     },
     drawNegative : function(ctx){
         for(var i=0;i<this.negTerms.length;i++){
             this.extendUp(ctx,nodes.nodeNegative,i*4);
-            this.extendLeft(ctx,nodes.current,5);
+            this.extendLeft(ctx,nodes.current,7);
             var resValue = -(this.rf/this.negTerms[i].value).toFixed(2);
             this.resistorLeft(ctx,nodes.current,`R${this.negTerms[i].index}`,resValue);
-            this.extendLeft(ctx,nodes.current,5);
+            this.extendLeft(ctx,nodes.current,4);
             this.drawVoltageRight(ctx,nodes.current,`V${this.negTerms[i].index}`);
         }
 
@@ -187,17 +189,19 @@ var circuit = {
             this.extendRight(ctx,nodes.current,1);
             var resValue = -(this.rf/this.z).toFixed(2);
             this.resistorRight(ctx,nodes.current,"Rx",resValue);
-            this.extendRight(ctx,nodes.current,1);
+            this.extendRight(ctx,nodes.current,2);
+            this.extendDown(ctx,nodes.current,1);
+            this.groundDown(ctx,nodes.current);
         }
     },
 
     drawPositive : function(ctx){
         for(var i=0;i<this.posTerms.length;i++){
             this.extendDown(ctx,nodes.nodePositive,i*4);
-            this.extendLeft(ctx,nodes.current,5);
+            this.extendLeft(ctx,nodes.current,7);
             var resValue = (this.rf/this.posTerms[i].value).toFixed(2);
             this.resistorLeft(ctx,nodes.current,`R${this.posTerms[i].index}`,resValue);
-            this.extendLeft(ctx,nodes.current,5);
+            this.extendLeft(ctx,nodes.current,4);
             this.drawVoltageRight(ctx,nodes.current,`V${this.posTerms[i].index}`);
         }
 
@@ -207,17 +211,75 @@ var circuit = {
             this.extendRight(ctx,nodes.current,1);
             var resValue = (this.rf/this.z).toFixed(2);
             this.resistorRight(ctx,nodes.current,"Rx",resValue);
-            this.extendRight(ctx,nodes.current,1);
+            this.extendRight(ctx,nodes.current,2);
+            this.extendDown(ctx,nodes.current,2);
+            this.groundDown(ctx,nodes.current);
         }
     },
 
-    drawVoltageRight : function(ctx,node,name){
+    drawVoltageRight : function(ctx,node,name,i){
         ctx.beginPath();
+        fillText(ctx,"+",node.x + 0.1,node.y -0.1);
+        fillText(ctx,"-",node.x - 2.4,node.y -0.1);
         circle(ctx,node.x-1,node.y);
         ctx.stroke();
         fillText(ctx,name,node.x-1.4,node.y+0.4);
         moveTo(ctx,node.x-2,node.y);
         this.extendLeft(ctx,nodes.current,2);
+        this.extendDown(ctx,nodes.current,1);
+        this.groundDown(ctx,nodes.current);
+    },
+
+    groundLeft : function(ctx,node){
+        ctx.strokeStyle = "black";
+        ctx.beginPath();
+        moveTo(ctx,node.x,node.y-1);
+        lineTo(ctx,node.x,node.y+1);
+        // moveTo(ctx,node.x-1,node.y);
+
+        moveTo(ctx,node.x-0.3,node.y-0.7);
+        lineTo(ctx,node.x-0.3,node.y+0.7);
+        // moveTo(ctx,node.x-1,node.y);
+
+        moveTo(ctx,node.x-0.6,node.y-0.4);
+        lineTo(ctx,node.x-0.6,node.y+0.4);
+        // moveTo(ctx,node.x-1,node.y);
+        ctx.stroke();
+        ctx.closePath();
+    },
+    groundRight : function(ctx,node){
+        ctx.strokeStyle = "black";
+        ctx.beginPath();
+        moveTo(ctx,node.x,node.y-1);
+        lineTo(ctx,node.x,node.y+1);
+        // moveTo(ctx,node.x-1,node.y);
+
+        moveTo(ctx,node.x+0.3,node.y-0.7);
+        lineTo(ctx,node.x+0.3,node.y+0.7);
+        // moveTo(ctx,node.x-1,node.y);
+
+        moveTo(ctx,node.x+0.6,node.y-0.4);
+        lineTo(ctx,node.x+0.6,node.y+0.4);
+        // moveTo(ctx,node.x-1,node.y);
+        ctx.stroke();
+        ctx.closePath();
+    },
+    groundDown : function(ctx,node){
+        ctx.strokeStyle = "black";
+        ctx.beginPath();
+        moveTo(ctx,node.x-0.8,node.y);
+        lineTo(ctx,node.x+0.8,node.y);
+        // moveTo(ctx,node.x-1,node.y);
+
+        moveTo(ctx,node.x-0.5,node.y+0.4);
+        lineTo(ctx,node.x+0.5,node.y+0.4);
+        // moveTo(ctx,node.x-1,node.y);
+
+        moveTo(ctx,node.x-0.2,node.y+0.8);
+        lineTo(ctx,node.x+0.2,node.y+0.8);
+        // moveTo(ctx,node.x-1,node.y);
+        ctx.stroke();
+        ctx.closePath();
     }
 }
 
