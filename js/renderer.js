@@ -2,8 +2,8 @@ var canvas = document.getElementById("mycanvas");
 var ctx = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
+canvas.style.width = '100%'
 canvas.height = window.innerHeight;
-
 
 var circuit = {
 
