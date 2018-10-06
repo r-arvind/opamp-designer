@@ -6,9 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Opamp Designer</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,700|Poppins" rel="stylesheet">
 </head>
 
-<body style="overflow: scroll">
+<body>
     <div class="body">
         <div class="header">
             <h1>Opamp Designer</h1>
@@ -18,8 +20,8 @@
             <div class="box">
                 <h2>Try it Out</h2>
                 <p>Write the coefficients of all the terms in the equation with a space</p>
-                <div>
-                <input type="text" id="input">
+                <div class="wrap-actions">
+                <input type="text"  onkeypress='validate(event)' placeholder="Write coefficient" id="input">
                 <a href="./designer.html">
                     <button class="go" onclick="localStorage.setItem('query',document.getElementById('input').value);">
                         Generate Circuit
@@ -64,4 +66,21 @@
 <!-- <script src="js/canvasApi.js"></script>
 <script src="js/renderer.js"></script> -->
 <!-- <script src="js/renderer.js"></script> -->
+<script>
+function validate(evt) {
+  const theEvent = evt || window.event;
+
+  if (theEvent.type === 'paste') {
+      key = event.clipboardData.getData('text/plain');
+  } else {
+      var key = theEvent.keyCode || theEvent.which;
+      key = String.fromCharCode(key);
+  }
+  var regex = /[0-9]|\./;
+  if( !regex.test(key) ) {
+    theEvent.returnValue = false;
+    if(theEvent.preventDefault) theEvent.preventDefault();
+  }
+}
+</script>
 </html>
