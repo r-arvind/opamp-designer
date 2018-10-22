@@ -21,12 +21,14 @@
                 <h2>Try it Out</h2>
                 <p>Write the coefficients of all the terms in the equation with a space</p>
                 <div class="wrap-actions">
+                    <form>
                 <input type="text"  onkeypress='validate(event)' placeholder="Write coefficient" id="input">
                 <a href="./designer.html">
-                    <button class="go" onclick="localStorage.setItem('query',document.getElementById('input').value);">
+                    <button class="go" formaction="./designer.html" onclick="localStorage.setItem('query',document.getElementById('input').value);" type="submit">
                         Generate Circuit
                     </button>
                 </a>
+            </form>
             </div>
             </div>
             <div class="block">
@@ -82,5 +84,17 @@ function validate(evt) {
     // if(theEvent.preventDefault) theEvent.preventDefault();
   }
 }
+</script>
+<script>
+
+
+// $(document).ready(function(){
+//     $('#TextBoxId').keypress(function(e){
+//       if(e.keyCode==13)
+//       $('#linkadd').click();
+//     });
+// });
+
+
 </script>
 </html>
